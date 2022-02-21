@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div>
+<form method="post">
+    <table class="table table-bordered">
+        <caption>Table of info about users</caption>
+        <tr>
+            <td class="text-center">Id</td>
+            <td class="text-center">Email</td>
+            <td class="text-center">UserName</td>
+        </tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                <td>@user.UserName</td>
+            </tr>
+        }
+    </table>
+</form>
+</div>
