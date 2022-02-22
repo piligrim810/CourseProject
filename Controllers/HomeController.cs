@@ -31,11 +31,15 @@ namespace CourseProject.Controllers
         {
             return View();
         }
+        public IActionResult CreateReview()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(ReviewModel review)
         {
-            review.UserId = User.FindFirst(User.Identity.Name).Value;
+            //review.UserId = User.FindFirst(User.Identity.Name).Value;
             db.Reviews.Add(review);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
