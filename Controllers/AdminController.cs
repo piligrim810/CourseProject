@@ -27,5 +27,12 @@ namespace CourseProject.Controllers
         {
             return View(db.Users.ToList());
         }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(id);
+            IdentityResult result = await _userManager.DeleteAsync(user);
+            return RedirectToAction("Index");
+        }
     }
 }
