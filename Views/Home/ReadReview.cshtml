@@ -1,0 +1,18 @@
+﻿@model CourseProject.Models.ReviewModel
+
+@{
+    ViewData["Title"] = "Read Review";
+}
+<div>
+<form method="post">
+    <table class="table table-bordered">
+            <tr>
+                <td>@Model.Id</td>
+                <td>@Model.UserId</td>
+                <td>@Model.Title</td>
+                <td>@Model.Text</td>
+                <td>@Model.Grade</td>
+            </tr>
+    </table>
+</form>
+</div>

@@ -23,6 +23,11 @@
                 <td>@review.Title</td>
                 <td>@review.Text</td>
                 <td>@review.Grade</td>
+                <td>
+                    <form asp-action="ReadReview" asp-route-reviewId="@review.Id" method="post">
+                        <button type="submit" class="btn btn-sm ">Read</button>
+                    </form>
+                </td>
             </tr>
         }
     </table>
