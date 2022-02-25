@@ -1,8 +1,29 @@
-﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+﻿@model IEnumerable<CourseProject.Models.ReviewModel>
 @{
     ViewData["Title"] = "Personal Page";
 }
 
-<div>
-    <h1> @Model.UserName</h1>
+<div class="text-center">
+    <form method="post">
+    <table class="table table-bordered">
+        <tr>
+            <td class="text-center">Id</td>
+            <td class="text-center">UserId</td>
+            <td class="text-center">Title</td>
+            <td class="text-center">Text</td>
+            <td class="text-center">Grade</td>
+        </tr>
+        @foreach (var review in Model)
+        {
+            <tr>
+                <td>@review.Id</td>
+                <td>@review.UserId</td>
+                <td>@review.Title</td>
+                <td>@review.Text</td>
+                <td>@review.Grade</td>
+            </tr>
+        }
+    </table>
+    <a asp-action="CreateReview">Create review</a>
+</form>
 </div>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using CourseProject.Data;
 
 namespace CourseProject.Controllers
 {
@@ -9,22 +10,22 @@ namespace CourseProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly ReviewDbContext dbReviews;
+        private readonly ApplicationDbContext db;
         UserManager<IdentityUser> _userManager;
 
 
         public HomeController(ILogger<HomeController> logger, SignInManager<IdentityUser> signInManager,
-                              ReviewDbContext contextReviews, UserManager<IdentityUser> userManager)
+                              ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _signInManager = signInManager;
-            dbReviews = contextReviews;
+            db = context;
             _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            List<ReviewModel> ListReviews = dbReviews.Reviews.ToList();
+            List<ReviewModel> ListReviews = db.Reviews.ToList();
             ListReviews.Reverse();
             return View(ListReviews);
         }
@@ -43,14 +44,14 @@ namespace CourseProject.Controllers
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             review.UserId = user.Id;
-            dbReviews.Reviews.Add(review);
-            await dbReviews.SaveChangesAsync();
+            db.Reviews.Add(review);
+            await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         [HttpPost]
         public async Task<IActionResult> ReadReview(int reviewId)
         {
-            ReviewModel review = dbReviews.Reviews.Single(s => s.Id == reviewId);
+            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
             return View(review);
         }
 
