@@ -24,7 +24,9 @@ namespace CourseProject.Controllers
 
         public IActionResult Index()
         {
-            return View(dbReviews.Reviews.ToList());
+            List<ReviewModel> ListReviews = dbReviews.Reviews.ToList();
+            ListReviews.Reverse();
+            return View(ListReviews);
         }
 
         public IActionResult Privacy()
