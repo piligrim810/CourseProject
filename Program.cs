@@ -21,6 +21,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     options.Password.RequireLowercase = false;
     options.Password.RequireDigit = false;
 })
+    .AddRoles<IdentityRole>()
+    .AddUserManager<UserManager<IdentityUser>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -38,6 +40,10 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+var scope = app.Services.CreateScope();
+var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+var rolesManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+await RoleInitializer.InitializeAsync(userManager, rolesManager);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -24,7 +24,7 @@
                     <button asp-action="Delete" asp-route-id="@user.Id" type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </td>
                 <td>
-                    <button asp-controller="PersonalPage" asp-action="IndexAdmin" asp-route-id="@user.Id" type="submit" class="btn btn-sm btn-danger">@user.UserName Personal Page</button>
+                    <button asp-controller="PersonalPage" asp-action="IndexAdmin" asp-route-id="@user.Id" type="submit" class="btn btn-sm btn-danger">"@user.UserName" Personal Page</button>
                 </td>
             </tr>
         }

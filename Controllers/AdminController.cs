@@ -23,6 +23,7 @@ namespace CourseProject.Controllers
             db = context;
             _userManager = userManager;
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             return View(db.Users.ToList());
