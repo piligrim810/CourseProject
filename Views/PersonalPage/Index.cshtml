@@ -21,6 +21,15 @@
                 <td>@review.Title</td>
                 <td>@review.Text</td>
                 <td>@review.Grade</td>
+                <td>
+                    <button asp-action="ReadReview" asp-route-reviewId="@review.Id" type="submit" class="btn btn-sm ">Read</button>
+                </td>
+                <td>
+                    <button asp-action="DeleteReview" asp-route-reviewId="@review.Id" type="submit" class="btn btn-sm ">Delete</button>
+                </td>
+                <td>
+                    <button asp-action="EditReview" asp-route-reviewId="@review.Id" type="submit" class="btn btn-sm ">Edit</button>
+                </td>
             </tr>
         }
     </table>

@@ -1,0 +1,21 @@
+﻿@model CourseProject.Models.ReviewModel
+@{
+    ViewBag.Title = "Creating review";
+}
+<form asp-action="create">
+    <div class="form-group">
+        <label asp-for="Title" class="control-label">Title</label>
+        <input type="text" asp-for="Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Text" class="control-label">Text</label>
+        <input type="text" asp-for="Text" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Grade" class="control-label">Grade</label>
+        <input type="number" asp-for="Grade" class="form-control" />
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+</form>

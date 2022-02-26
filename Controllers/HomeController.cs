@@ -34,20 +34,7 @@ namespace CourseProject.Controllers
         {
             return View();
         }
-        public IActionResult CreateReview()
-        {
-            return View();
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ReviewModel review)
-        {
-            IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            review.UserId = user.Id;
-            db.Reviews.Add(review);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
         [HttpPost]
         public async Task<IActionResult> ReadReview(int reviewId)
         {

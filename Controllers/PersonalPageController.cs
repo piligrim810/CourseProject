@@ -25,7 +25,48 @@ namespace CourseProject.Controllers
                 .ToList();
             return View(ReviewsThisUser);
         }
+        public IActionResult CreateReview()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(ReviewModel review)
+        {
+            IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            review.UserId = user.Id;
+            db.Reviews.Add(review);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReadReview(int reviewId)
+        {
+            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            return View(review);
+        }
+        public async Task<IActionResult> DeleteReview(int reviewId)
+        {
+            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            db.Reviews.Remove(review);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> EditReview(int reviewId)
+        {
+            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            return View(review);
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveReview(ReviewModel review)
+        {
+            IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            review.UserId = user.Id;
+            db.Reviews.Update(review);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> IndexAdmin(string id)
         {
             IdentityUser user = await _userManager.FindByIdAsync(id);
@@ -34,5 +75,6 @@ namespace CourseProject.Controllers
                 .ToList();
             return View(ReviewsThisUser);
         }
+
     }
 }
