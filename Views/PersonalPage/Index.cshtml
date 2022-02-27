@@ -4,14 +4,27 @@
 }
 
 <div class="text-center">
+ <form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Title: </label>
+        <input name="Title" class="form-control" />
+        <label class="control-label">Grade: </label>
+        <input name="Grade" class="form-control" />
+        <input type="submit" value="Filter" class="btn btn-default" />
+    </div>
+</form>
     <form method="post">
     <table class="table table-bordered">
         <tr>
             <td class="text-center">Id</td>
             <td class="text-center">UserId</td>
-            <td class="text-center">Title</td>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.TitleSort">Title</a>
+            </th>
             <td class="text-center">Text</td>
-            <td class="text-center">Grade</td>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.GradeSort">Grade</a>
+            </th>
         </tr>
         @foreach (var review in Model)
         {

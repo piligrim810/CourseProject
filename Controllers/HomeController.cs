@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using CourseProject.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseProject.Controllers
 {
@@ -13,7 +14,6 @@ namespace CourseProject.Controllers
         private readonly ApplicationDbContext db;
         UserManager<IdentityUser> _userManager;
 
-
         public HomeController(ILogger<HomeController> logger, SignInManager<IdentityUser> signInManager,
                               ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
@@ -22,12 +22,28 @@ namespace CourseProject.Controllers
             db = context;
             _userManager = userManager;
         }
-
-        public IActionResult Index()
+        public IActionResult Index(string Title,int Grade,SortState sortOrder = SortState.TitleAsc)
         {
-            List<ReviewModel> ListReviews = db.Reviews.ToList();
-            ListReviews.Reverse();
-            return View(ListReviews);
+            IQueryable<ReviewModel> Reviews = db.Reviews;
+            if (!String.IsNullOrEmpty(Title))
+            {
+                Reviews = Reviews.Where(p => p.Title.Contains(Title));
+            }
+            if (Grade != null && Grade != 0)
+            {
+                Reviews = Reviews.Where(p => p.Grade == Grade );
+            }
+
+            ViewData["TitleSort"] = sortOrder == SortState.TitleAsc ? SortState.TitleDesc : SortState.TitleAsc;
+            ViewData["GradeSort"] = sortOrder == SortState.GradeAsc ? SortState.GradeDesc : SortState.GradeAsc;
+            Reviews = sortOrder switch
+            {
+                SortState.TitleDesc => Reviews.OrderByDescending(s => s.Title),
+                SortState.GradeAsc => Reviews.OrderBy(s => s.Grade),
+                SortState.GradeDesc => Reviews.OrderByDescending(s => s.Grade),
+                _ => Reviews.OrderBy(s => s.Title),
+            };
+            return View(Reviews.AsNoTracking().ToList());
         }
 
         public IActionResult Privacy()

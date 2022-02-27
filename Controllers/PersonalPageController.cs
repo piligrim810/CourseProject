@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using CourseProject.Models;
 using CourseProject.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseProject.Controllers
 {
@@ -17,13 +18,30 @@ namespace CourseProject.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Title, int Grade, SortState sortOrder = SortState.TitleAsc)
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            List<ReviewModel> ReviewsThisUser = db.Reviews
-                .Where(c => c.UserId == user.Id)
-                .ToList();
-            return View(ReviewsThisUser);
+            IQueryable<ReviewModel> ReviewsThisUser = db.Reviews
+                .Where(c => c.UserId == user.Id);
+            if (!String.IsNullOrEmpty(Title))
+            {
+                ReviewsThisUser = ReviewsThisUser.Where(p => p.Title.Contains(Title));
+            }
+            if (Grade != null && Grade != 0)
+            {
+                ReviewsThisUser = ReviewsThisUser.Where(p => p.Grade == Grade);
+            }
+
+            ViewData["TitleSort"] = sortOrder == SortState.TitleAsc ? SortState.TitleDesc : SortState.TitleAsc;
+            ViewData["GradeSort"] = sortOrder == SortState.GradeAsc ? SortState.GradeDesc : SortState.GradeAsc;
+            ReviewsThisUser = sortOrder switch
+            {
+                SortState.TitleDesc => ReviewsThisUser.OrderByDescending(s => s.Title),
+                SortState.GradeAsc => ReviewsThisUser.OrderBy(s => s.Grade),
+                SortState.GradeDesc => ReviewsThisUser.OrderByDescending(s => s.Grade),
+                _ => ReviewsThisUser.OrderBy(s => s.Title),
+            };
+            return View(ReviewsThisUser.AsNoTracking().ToList());
         }
         public IActionResult CreateReview()
         {
