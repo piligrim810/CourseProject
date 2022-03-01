@@ -14,7 +14,7 @@ namespace CourseProject.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly CourseProject.Data.ApplicationDbContext db;
-        UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AdminController(SignInManager<IdentityUser> signInManager,
                               CourseProject.Data.ApplicationDbContext context, UserManager<IdentityUser> userManager)
@@ -32,7 +32,7 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             IdentityUser user = await _userManager.FindByIdAsync(id);
-            IdentityResult result = await _userManager.DeleteAsync(user);
+            await _userManager.DeleteAsync(user);
             return RedirectToAction("Index");
         }
     }

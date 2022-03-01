@@ -12,7 +12,7 @@ namespace CourseProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ApplicationDbContext db;
-        UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public HomeController(ILogger<HomeController> logger, SignInManager<IdentityUser> signInManager,
                               ApplicationDbContext context, UserManager<IdentityUser> userManager)
@@ -24,7 +24,7 @@ namespace CourseProject.Controllers
         }
         public IActionResult Index(string Title,int Grade,SortState sortOrder = SortState.TitleAsc)
         {
-            IQueryable<ReviewModel> Reviews = db.Reviews;
+            IQueryable<Review> Reviews = db.Reviews;
             if (!String.IsNullOrEmpty(Title))
             {
                 Reviews = Reviews.Where(p => p.Title.Contains(Title));
@@ -54,7 +54,7 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> ReadReview(int reviewId)
         {
-            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            Review review = db.Reviews.Single(s => s.Id == reviewId);
             return View(review);
         }
 

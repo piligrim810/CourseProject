@@ -21,7 +21,7 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Index(string Title, int Grade, SortState sortOrder = SortState.TitleAsc)
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            IQueryable<ReviewModel> ReviewsThisUser = db.Reviews
+            IQueryable<Review> ReviewsThisUser = db.Reviews
                 .Where(c => c.UserId == user.Id);
             if (!String.IsNullOrEmpty(Title))
             {
@@ -49,7 +49,7 @@ namespace CourseProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ReviewModel review)
+        public async Task<IActionResult> Create(Review review)
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             review.UserId = user.Id;
@@ -61,23 +61,23 @@ namespace CourseProject.Controllers
         [HttpPost]
         public async Task<IActionResult> ReadReview(int reviewId)
         {
-            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            Review review = db.Reviews.Single(s => s.Id == reviewId);
             return View(review);
         }
         public async Task<IActionResult> DeleteReview(int reviewId)
         {
-            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            Review review = db.Reviews.Single(s => s.Id == reviewId);
             db.Reviews.Remove(review);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
         public async Task<IActionResult> EditReview(int reviewId)
         {
-            ReviewModel review = db.Reviews.Single(s => s.Id == reviewId);
+            Review review = db.Reviews.Single(s => s.Id == reviewId);
             return View(review);
         }
         [HttpPost]
-        public async Task<IActionResult> SaveReview(ReviewModel review)
+        public async Task<IActionResult> SaveReview(Review review)
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
             review.UserId = user.Id;
@@ -88,7 +88,7 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> IndexAdmin(string id)
         {
             IdentityUser user = await _userManager.FindByIdAsync(id);
-            List<ReviewModel> ReviewsThisUser = db.Reviews
+            List<Review> ReviewsThisUser = db.Reviews
                 .Where(c => c.UserId == user.Id)
                 .ToList();
             return View(ReviewsThisUser);
