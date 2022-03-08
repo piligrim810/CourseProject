@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using CourseProject.Models;
 using CourseProject.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CourseProject.Controllers
 {
@@ -45,6 +46,8 @@ namespace CourseProject.Controllers
         }
         public IActionResult CreateReview()
         {
+            SelectList Groups = new SelectList(db.Groups, "Id", "GroupName");
+            ViewBag.Groups = Groups;
             return View();
         }
 
@@ -52,6 +55,7 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> Create(Review review)
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+            review.UserName = user.UserName;
             review.UserId = user.Id;
             db.Reviews.Add(review);
             await db.SaveChangesAsync();

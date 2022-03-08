@@ -43,7 +43,7 @@ else
 var scope = app.Services.CreateScope();
 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 var rolesManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-await RoleInitializer.InitializeAsync(userManager, rolesManager);
+await Initializer.InitializeAsync(userManager, rolesManager);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

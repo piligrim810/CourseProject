@@ -24,7 +24,7 @@ namespace CourseProject.Controllers
         }
         public IActionResult Index(string Title,int Grade,SortState sortOrder = SortState.TitleAsc)
         {
-            IQueryable<Review> Reviews = db.Reviews;
+            IQueryable<Review> Reviews = db.Reviews.Include(u => u.Group);
             if (!String.IsNullOrEmpty(Title))
             {
                 Reviews = Reviews.Where(p => p.Title.Contains(Title));
