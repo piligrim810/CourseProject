@@ -335,7 +335,7 @@ namespace CourseProject.Data.Migrations
             modelBuilder.Entity("CourseProject.Data.Image", b =>
                 {
                     b.HasOne("CourseProject.Data.Review", "Review")
-                        .WithMany()
+                        .WithMany("Images")
                         .HasForeignKey("ReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -427,6 +427,11 @@ namespace CourseProject.Data.Migrations
             modelBuilder.Entity("CourseProject.Data.Group", b =>
                 {
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("CourseProject.Data.Review", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

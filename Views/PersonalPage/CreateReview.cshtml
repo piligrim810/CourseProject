@@ -1,23 +1,27 @@
-﻿@model CourseProject.Data.Review
+﻿@model CourseProject.Models.Request
 @{
     ViewBag.Title = "Creating review";
 }
-<form asp-action="create">
+<form asp-action="create" enctype="multipart/form-data">
     <div class="form-group">
-        <label asp-for="Title" class="control-label">Title</label>
-        <input type="text" asp-for="Title" class="form-control" />
+        <label asp-for="@Model.Review.Title" class="control-label">Title</label>
+        <input type="text" asp-for="@Model.Review.Title" class="form-control" />
     </div>
         <p>Group
-            @Html.DropDownListFor(model => model.GroupId, ViewBag.Groups as SelectList)
+            @Html.DropDownListFor(model => model.Review.GroupId, ViewBag.Groups as SelectList)
         </p>
     <div class="form-group">
-        <label asp-for="Text" class="control-label">Text</label>
-        <input type="text" asp-for="Text" class="form-control" />
+        <label asp-for="@Model.Review.Text" class="control-label">Text</label>
+        <input type="text" asp-for="@Model.Review.Text" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Grade" class="control-label">Grade</label>
-        <input type="number" asp-for="Grade" class="form-control" />
+        <label asp-for="@Model.Review.Grade" class="control-label">Grade</label>
+        <input type="number" asp-for="@Model.Review.Grade" class="form-control"/>
     </div>
+    <div method="post" class="form-group">
+        <input type="file" asp-for="@Model.Image" class="form-control"/>
+    </div>
+
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-default" />
     </div>

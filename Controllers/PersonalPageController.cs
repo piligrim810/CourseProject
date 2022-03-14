@@ -5,17 +5,24 @@ using CourseProject.Models;
 using CourseProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Azure.Storage.Blobs;
+using Azure.Storage;
+using Microsoft.Extensions.Options;
 
 namespace CourseProject.Controllers
 {
     public class PersonalPageController : Controller
     {
+        private readonly AzureStorageConfig _azureStorageConfig;
         UserManager<IdentityUser> _userManager;
+        private readonly IWebHostEnvironment env;
         private readonly ApplicationDbContext db;
-        public PersonalPageController(UserManager<IdentityUser> userManager, ApplicationDbContext context) 
+        public PersonalPageController(UserManager<IdentityUser> userManager, ApplicationDbContext context, IOptions<AzureStorageConfig> config, IWebHostEnvironment appEnvironmewt) 
         {
             _userManager = userManager;
             db = context;
+            _azureStorageConfig = config.Value;
+            env = appEnvironmewt;
         }
 
         [Authorize]
@@ -47,18 +54,41 @@ namespace CourseProject.Controllers
         public IActionResult CreateReview()
         {
             SelectList Groups = new SelectList(db.Groups, "Id", "GroupName");
+            Request request = new Request();
             ViewBag.Groups = Groups;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Review review)
+        public async Task<IActionResult> Create(Request request)
         {
             IdentityUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-            review.UserName = user.UserName;
-            review.UserId = user.Id;
-            db.Reviews.Add(review);
+            request.Review.UserName = user.UserName;
+            request.Review.UserId = user.Id;
+            db.Reviews.Add(request.Review);
             await db.SaveChangesAsync();
+
+            Uri blobUri = new Uri("https://" +
+                     _azureStorageConfig.AccountName +
+                     ".blob.core.windows.net/" +
+                     _azureStorageConfig.ContainerName +
+                     "/" + request.Image.FileName);
+
+            StorageSharedKeyCredential storageCredentials =
+                new StorageSharedKeyCredential(_azureStorageConfig.AccountName, _azureStorageConfig.AccountKey);
+
+            BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
+
+            if (request.Image != null)
+            {
+                using (var fileStream = request.Image.OpenReadStream())
+                {
+                    await blobClient.UploadAsync(fileStream);
+                }
+                Data.Image file = new Data.Image { Name = request.Image.FileName , Review = request.Review};
+                db.Images.Add(file);
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 
@@ -66,6 +96,23 @@ namespace CourseProject.Controllers
         public async Task<IActionResult> ReadReview(int reviewId)
         {
             Review review = db.Reviews.Single(s => s.Id == reviewId);
+            review.Images = db.Images.Where(s => s.Review == review).ToList();
+
+            Uri blobUri = new Uri("https://" +
+                     _azureStorageConfig.AccountName +
+                     ".blob.core.windows.net/" +
+                     _azureStorageConfig.ContainerName +
+                     "/" + review.Images.First().Name);
+
+            StorageSharedKeyCredential storageCredentials =
+                new StorageSharedKeyCredential(_azureStorageConfig.AccountName, _azureStorageConfig.AccountKey);
+
+            BlobClient blobClient = new BlobClient(blobUri, storageCredentials);
+            var memoryStream = new MemoryStream();
+            await blobClient.DownloadToAsync(memoryStream);
+
+            ViewBag.imgSrc = String.Format("data:image/png;base64,{0}", Convert.ToBase64String(memoryStream.ToArray()));
+            memoryStream.Close();
             return View(review);
         }
         public async Task<IActionResult> DeleteReview(int reviewId)
@@ -97,6 +144,5 @@ namespace CourseProject.Controllers
                 .ToList();
             return View(ReviewsThisUser);
         }
-
     }
 }

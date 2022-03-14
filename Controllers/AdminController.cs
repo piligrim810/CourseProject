@@ -13,11 +13,11 @@ namespace CourseProject.Controllers
     public class AdminController : Controller
     {
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly CourseProject.Data.ApplicationDbContext db;
+        private readonly ApplicationDbContext db;
         private readonly UserManager<IdentityUser> _userManager;
 
         public AdminController(SignInManager<IdentityUser> signInManager,
-                              CourseProject.Data.ApplicationDbContext context, UserManager<IdentityUser> userManager)
+                              ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             db = context;

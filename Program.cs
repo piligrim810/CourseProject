@@ -25,7 +25,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddUserManager<UserManager<IdentityUser>>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddMvc();
+builder.Services.AddOptions();
+builder.Services.Configure<AzureStorageConfig>(builder.Configuration.GetSection("AzureStorageConfig"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

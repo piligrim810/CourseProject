@@ -5,6 +5,12 @@ using CourseProject.Models;
 
 namespace CourseProject.Data
 {
+    public class AzureStorageConfig
+    {
+        public string AccountName { get; set; }
+        public string AccountKey { get; set; }
+        public string ContainerName { get; set; }
+    }
     public class Review
     {
         public int Id { get; set; }
@@ -15,6 +21,8 @@ namespace CourseProject.Data
         public string Title { get; set; }
         public string Text { get; set; }
         public int Grade { get; set; }
+        public List<Image> Images { get; set; }
+
     }
     public class Group
     {
