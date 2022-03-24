@@ -5,14 +5,19 @@
 }
 <div>
 <form method="post">
-    <table class="table table-bordered">
-            <tr>
-                <td>@Model.Id</td>
-                <td>@Model.UserId</td>
-                <td>@Model.Title</td>
-                <td>@Model.Text</td>
-                <td>@Model.Grade</td>
-            </tr>
-    </table>
+    <div>
+        <span>@Model.UserName</span>
+            <div class="rating-mini">
+            @for (int i = 0;i < @Model.Grade; i++)
+            {
+                <span class="active"></span>
+            }
+            </div> <br>
+            <hr>
+                <h5>Group: @Model.Group.GroupName</h5>
+                <h3>@Model.Title</h3> 
+                <text>@Model.Text</text> <br>
+                <img src="@ViewBag.imgSrc" />
+    </div> <br>
 </form>
-<img src="@ViewBag.imgSrc" />
+</div>

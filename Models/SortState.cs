@@ -5,6 +5,8 @@
         TitleAsc,
         TitleDesc,
         GradeAsc,
-        GradeDesc
+        GradeDesc,
+        GroupAsc,
+        GroupDesc,
     }
 }

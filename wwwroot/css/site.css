@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -16,3 +16,123 @@ html {
 body {
   margin-bottom: 60px;
 }
+.hidden {
+    display: none;
+}
+
+.c-button {
+    -webkit-appearance: button;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-style: solid;
+    border-width: 1px;
+    padding: 1px 7px 2px;
+    text-rendering: auto;
+    color: initial;
+    display: inline-block;
+    text-align: start;
+    margin: 0em;
+    font: 400 11px system-ui;
+}
+
+#review {
+    border: 5px solid blue;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#drop_zone {
+    border: 5px solid blue;
+    width: 200px;
+    height: 100px;
+}
+
+.rating-area {
+    overflow: hidden;
+    width: 265px;
+    margin-left: 0em;
+}
+
+    .rating-area:not(:checked) > input {
+        display: none;
+    }
+
+    .rating-area:not(:checked) > label {
+        float: right;
+        width: 42px;
+        padding: 0;
+        cursor: pointer;
+        font-size: 32px;
+        line-height: 32px;
+        color: lightgrey;
+        text-shadow: 1px 1px #bbb;
+    }
+
+        .rating-area:not(:checked) > label:before {
+            content: '★';
+        }
+
+    .rating-area > input:checked ~ label {
+        color: gold;
+        text-shadow: 1px 1px #c60;
+    }
+
+    .rating-area:not(:checked) > label:hover,
+    .rating-area:not(:checked) > label:hover ~ label {
+        color: gold;
+    }
+
+    .rating-area > input:checked + label:hover,
+    .rating-area > input:checked + label:hover ~ label,
+    .rating-area > input:checked ~ label:hover,
+    .rating-area > input:checked ~ label:hover ~ label,
+    .rating-area > label:hover ~ input:checked ~ label {
+        color: gold;
+        text-shadow: 1px 1px goldenrod;
+    }
+
+.rate-area > label:active {
+    position: relative;
+}
+
+
+.rating-result {
+    width: 265px;
+    margin: 0 auto;
+}
+
+    .rating-result span {
+        padding: 0;
+        font-size: 32px;
+        margin: 0 3px;
+        line-height: 1;
+        color: lightgrey;
+        text-shadow: 1px 1px #bbb;
+    }
+
+    .rating-result > span:before {
+        content: '★';
+    }
+
+    .rating-result > span.active {
+        color: gold;
+        text-shadow: 1px 1px #c60;
+    }
+
+.rating-mini {
+    display: inline-block;
+    font-size: 0;
+}
+
+    .rating-mini span {
+        padding: 0;
+        font-size: 20px;
+        line-height: 1;
+        color: lightgrey;
+    }
+
+    .rating-mini > span:before {
+        content: '★';
+    }
+
+    .rating-mini > span.active {
+        color: gold;
+    }

@@ -3,27 +3,49 @@
     ViewData["Title"] = "Personal Page";
 }
 
-<div class="text-center">
-    <form method="post">
-    <table class="table table-bordered">
-        <tr>
-            <td class="text-center">Id</td>
-            <td class="text-center">UserId</td>
-            <td class="text-center">Title</td>
-            <td class="text-center">Text</td>
-            <td class="text-center">Grade</td>
-        </tr>
-        @foreach (var review in Model)
+<div>
+ <form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Title: </label>
+        <input name="Title" class="form-control" />
+        <label class="control-label">Grade: </label>
+        <input name="Grade" class="form-control" />
+        <input type="submit" value="Filter" class="btn btn-default" />
+    </div>
+
+    <a asp-action="CreateReviewAdmin" asp-route-userName="@ViewBag.UserName">Create review</a> <hr />
+</form>
+<form method="post">
+    <div>
+        <text>Sort by:</text>
+        <a asp-action="Index" asp-route-sortOrder="@ViewBag.TitleSort">Title</a>
+        <a asp-action="Index" asp-route-sortOrder="@ViewBag.GradeSort">Grade</a> 
+        <a asp-action="Index" asp-route-sortOrder="@ViewBag.GroupSort">Group</a><br>
+    </div>
+@foreach (var review in Model)
         {
-            <tr>
-                <td>@review.Id</td>
-                <td>@review.UserId</td>
-                <td>@review.Title</td>
-                <td>@review.Text</td>
-                <td>@review.Grade</td>
-            </tr>
-        }
-    </table>
-    <a asp-action="CreateReview">Create review</a>
+        <div id="review">
+        <span>@review.UserName</span>
+            <div class="rating-mini">
+            @for (int i = 0;i < @review.Grade; i++)
+            {
+                <span class="active"></span>
+            }
+            </div> <br>
+            <hr>
+                <h5>Group: @review.Group.GroupName</h5>
+                <h3>@review.Title</h3> 
+                <text>@review.Text</text> <br>
+                <td>
+                    <button asp-action="ReadReview" asp-route-reviewId="@review.Id" type="submit" class="c-button" >Read</button>
+                </td>
+                <td>
+                    <button asp-action="DeleteReview" asp-route-reviewId="@review.Id" type="submit" class="c-button">Delete</button>
+                </td>
+                <td>
+                    <button asp-action="EditReview" asp-route-reviewId="@review.Id" type="submit" class="c-button">Edit</button>
+                </td>
+         </div> <br>
+         }
 </form>
 </div>

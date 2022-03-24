@@ -3,6 +3,9 @@
     ViewBag.Title = "Edit Review";
 }
 <form asp-action="SaveReview" asp-controller="PersonalPage" asp-route-id="@Model.Id">
+    <div class="hidden">
+        <input type="text" asp-for="UserName" class="form-control"/>
+    </div>
     <div class="form-group">
         <label asp-for="Title" class="control-label">Title</label>
         <input type="text" asp-for="Title" class="form-control" />
@@ -11,9 +14,22 @@
         <label asp-for="Text" class="control-label">Text</label>
         <input type="text" asp-for="Text" class="form-control" />
     </div>
-        <div class="form-group">
-        <label asp-for="Grade" class="control-label">Grade</label>
-        <input type="number" asp-for="Grade" class="form-control" />
+    <p>Group
+        @Html.DropDownListFor(model => model.GroupId, ViewBag.Groups as SelectList)
+    </p>
+
+    <label asp-for="Grade" class="control-label">Grade</label>
+    <div class="rating-area">
+	        <input type="radio" id="star-5" name="Grade" value="5">
+	        <label for="star-5" title="Оценка «5»"></label>	
+	        <input type="radio" id="star-4" name="Grade" value="4">
+	        <label for="star-4" title="Оценка «4»"></label>    
+	        <input type="radio" id="star-3" name="Grade" value="3">
+	        <label for="star-3" title="Оценка «3»"></label>  
+	        <input type="radio" id="star-2" name="Grade" value="2">
+	        <label for="star-2" title="Оценка «2»"></label>    
+	        <input type="radio" id="star-1" name="Grade" value="1" checked>
+	        <label for="star-1" title="Оценка «1»"></label>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-default" />

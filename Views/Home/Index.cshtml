@@ -4,9 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
     <form method="get">
     <div class="form-inline form-group">
         <label class="control-label">Title: </label>
@@ -16,34 +14,32 @@
         <input type="submit" value="Filter" class="btn btn-default" />
     </div>
 </form>
-    <form method="post">
-    <table class="table table-bordered">
-        <tr>
-            <td class="text-center">Id</td>
-            <td class="text-center">UserId</td>
-            <td class="text-center">Group</td>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewBag.TitleSort">Title</a>
-            </th>
-            <td class="text-center">Text</td>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewBag.GradeSort">Grade</a>
-            </th>
-        </tr>
-        @foreach (var review in Model)
+
+<form method="post">
+    <div>
+        <text>Sort by:</text>
+        <a asp-action="Index" asp-route-sortOrder="@ViewBag.TitleSort">Title</a>
+        <a asp-action="Index" asp-route-sortOrder="@ViewBag.GradeSort">Grade</a> 
+        <a asp-action="Index" asp-route-sortOrder="@ViewBag.GroupSort">Group</a><br>
+    </div>
+@foreach (var review in Model)
         {
-            <tr>
-                <td>@review.Id</td>
-                <td>@review.UserId</td>
-                <td>@review.Group.GroupName</td>
-                <td>@review.Title</td>
-                <td>@review.Text</td>
-                <td>@review.Grade</td>
+        <div id="review">
+        <span>@review.UserName</span>
+            <div class="rating-mini">
+            @for (int i = 0;i < @review.Grade; i++)
+            {
+                <span class="active"></span>
+            }
+            </div> <br>
+            <hr>
+                <h5>Group: @review.Group.GroupName</h5>
+                <h3>@review.Title</h3>
+                <text>@review.Text</text> <br>
                 <td>
-                    <button asp-action="ReadReview" asp-route-reviewId="@review.Id" type="submit" class="btn btn-sm ">Read</button>
+                    <button asp-action="ReadReview" asp-route-reviewId="@review.Id" type="submit" class="c-button" >Read</button>
                 </td>
-            </tr>
-        }
-    </table>
+         </div> <br>
+         }
 </form>
 </div>
